@@ -1,7 +1,7 @@
 
-##SCRIPT
+#SCRIPT
 
-#Hive 
+##Hive 
 
 ** Create Hive Table && Load Data **
 
@@ -53,7 +53,7 @@ CREATE TEMPORARY FUNCTION city_full as 'DE.App';
 
 ```
 
-** Load Data in Result Table **
+**Load Data in Result Table**
 ```
 FROM city
 INSERT OVERWRITE TABLE cityOne
@@ -61,7 +61,7 @@ SELECT id,code,city_full(name),year
 
 ```
 
-#Bash
+##Bash
 
 ```
 
