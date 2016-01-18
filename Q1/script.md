@@ -3,7 +3,7 @@
 
 ##Hive 
 
-** Create Hive Table && Load Data **
+**Create Hive Table && Load Data**
 
 This is the table already present in HDFS
 
@@ -29,7 +29,7 @@ INTO  table city;
 
 ```
 
-** Create Result Table **
+**Create Result Table**
 
 ```
 CREATE EXTERNAL TABLE  cityOne(
@@ -44,7 +44,7 @@ stored as TEXTFILE
 LOCATION '/user/root/hiveUDF';
 
 ```
-** Register Jar && Create Function**
+**Register Jar && Create Function**
 
 
 ```
