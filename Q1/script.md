@@ -14,9 +14,9 @@ CREATE EXTERNAL TABLE  city(
   name string,
   year string
 )
-row format DELIMITED
-fields TERMINATED by ','
-stored as TEXTFILE
+ROW FORMAT DELIMITED
+FIELDS TERMINATED by ','
+STORED AS TEXTFILE
 LOCATION '/user/root/hiveUDF';
 
 ```
@@ -25,7 +25,7 @@ LOCATION '/user/root/hiveUDF';
 LOAD DATA  
 INPATH '/citydata.csv'
 OVERWRITE
-INTO  table city;
+INTO  TABLE  city;
 
 ```
 
@@ -38,9 +38,9 @@ CREATE EXTERNAL TABLE  cityOne(
   name string,
   year string
 )
-row format DELIMITED
-fields TERMINATED by ','
-stored as TEXTFILE
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
 LOCATION '/user/root/hiveUDF';
 
 ```
