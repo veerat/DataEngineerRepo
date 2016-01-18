@@ -1,6 +1,6 @@
 #SCRIPT
 
-**Create Table Format TexFile**
+**Create Table TextFile Format**
 
 ```
 REATE EXTERNAL TABLE  city(
@@ -9,13 +9,13 @@ REATE EXTERNAL TABLE  city(
   name string,
   year string
 )
-row format DELIMITED
-fields TERMINATED by ','
-stored as TEXTFILE
+ROW FORMAT  DELIMITED
+FIELDS TERMINATED by ','
+STORED AS TEXTFILE
 LOCATION '/user/root/hiveUDF';
 ```
 
-**Load file into table**
+**Load File into Table**
 ```
 
 
@@ -26,7 +26,7 @@ INTO  table city;
 
 ```
 
-**Create file into Avro**
+**Create Table into Avro Format**
 ```
 
 CREATE TABLE city_avro_ext(
@@ -48,5 +48,4 @@ INSERT OVERWRITE TABLE city_avro_ext
 SELECT * ;
 
 ```
-
 
