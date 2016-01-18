@@ -2,7 +2,7 @@
 
 I am using data from one of our lab.
 
-**Create Table sales && stores**
+**Create Table sales & stores**
 
 ```
 CREATE TABLE sales(
@@ -34,7 +34,7 @@ INPATH '/root/data/stores.txt'
 OVERWRITE INTO TABLE stores;
 
 ```
-**Query to find  5 states with the highest transaction amount**
+**Query to Find  5 states with Highest Transaction Amount**
 
 ```
 SELECT st.state, SUM(price) as p
