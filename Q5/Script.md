@@ -1,7 +1,9 @@
 #Script
 
 I am using data from one of our lab.
+
 **Create Table sales && stores**
+
 ```
 CREATE TABLE sales(
 id string,
@@ -32,7 +34,7 @@ INPATH '/root/data/stores.txt'
 OVERWRITE INTO TABLE stores;
 
 ```
-***Query to find  5 states with the highest transaction amount**
+**Query to find  5 states with the highest transaction amount**
 
 ```
 SELECT st.state, SUM(price) as p
