@@ -12,5 +12,12 @@ agent1.sinks.sink1.hdfs.filePrefix = access_log
 agent1.sinks.sink1.hdfs.fileType = DataStream
 agent1.sinks.sink1.hdfs.writeFormat = Text
 agent1.sinks.sink1.hdfs.rollInterval = 1000
-agent1.sinks.sink1.hdfs.rollSize = 0
+agent1.sinks.sink1.hdfs.rollSize = 268435456
 agent1.sinks.sink1.hdfs.rollCount = 0
+
+
+
+**Questions**
+
+1) How to modify the config if the spooling directory is in hdfs
+2) Flume itself is creating so many files how to create one file 
