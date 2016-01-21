@@ -11,7 +11,6 @@ DESCRIBE FORMATTED TABLE sales;
 
 ```
 ```
-DROP TABLE IF EXISTS  sales;
 CREATE EXTERNAL TABLE sales(
   id INT,
   sale_date STRING,
@@ -26,8 +25,8 @@ STORED AS TEXTFILE
 LOCATION '/user/root/sales'
 TBLPROPERTIES("skip.header.line.count"="1");
 
-DROP TABLE IF EXISTS  sales_part;
-CREATE TABLE sales_part(
+OP TABLE IF EXISTS  sales_part_one;
+CREATE TABLE sales_part_one(
   id INT,
   sale_date STRING,
   store INT,
@@ -35,14 +34,9 @@ CREATE TABLE sales_part(
   amount DOUBLE
 )
 PARTITIONED BY (state STRING)
-CLUSTERED BY (title) INTO 12 BUCKETS;
+CLUSTERED BY (id) INTO 3 BUCKETS
 ROW FORMAT DELIMITED 
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE;
-
-FROM sales 
-INSERT INTO TABLE sales_part PARTITION(state)
-SELECT id,sale_date,store,product,amount,state;
-
 ```
 
