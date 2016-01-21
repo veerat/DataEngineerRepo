@@ -25,7 +25,7 @@ STORED AS TEXTFILE
 LOCATION '/user/root/sales'
 TBLPROPERTIES("skip.header.line.count"="1");
 
-OP TABLE IF EXISTS  sales_part_one;
+
 CREATE TABLE sales_part_one(
   id INT,
   sale_date STRING,
@@ -38,5 +38,11 @@ CLUSTERED BY (id) INTO 3 BUCKETS
 ROW FORMAT DELIMITED 
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE;
+
+FROM sales
+INSERT OVERWRITE TABLE sales_avro_one
+PARTITION (state)
+SELECT id, sales_date, store,product,amount;
+
 ```
 
