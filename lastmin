@@ -30,7 +30,10 @@ public class App extends UDF
     static Map<String,String> cityMap =  new HashMap<>();
 
     static {
-        cityMap.put("ft","Fort Worth");
+        
+        cityMap.put("Ft","Fort");
+        cityMap.put("Mntn","Mountains");
+        cityMap.put("Pk","Park");
         cityMap.put("sf","San Francisco");
         cityMap.put("ny","New York");
         cityMap.put("sj","San Jose");
@@ -38,10 +41,11 @@ public class App extends UDF
 
     }
 
-c static String evaluate(String city){
+public static String evaluate(String city){
 
-
-
+        // I suggest to include test cases for city where if it is null or empty string.
+         
+        // I don't think we need to convert to lowercase or trim the input
         String temp = city.toLowerCase().trim();
 
         String[] tempArr =  {"ft","sf","ny","sj","nj"} ;
@@ -80,11 +84,10 @@ a1.sinks = k1
 a1.channels = c1
 
 #channels
+In the requirements they mentioned it should be reliable, so I used file channel
 a1.channels.c1.type = memory
 a1.channels.c1.capacity = 50000
 a1.channels.c1.transactionCapacity = 50000
-
-
 
 #source properties
 a1.sources.src-1.type = spooldir
@@ -96,9 +99,8 @@ a1.sources.src-1.fileHeader = true
 #sink properties
 a1.sinks.k1.type = hdfs
 a1.sinks.k1.hdfs.path = /user/ec2-user/flumetest
-a1.sinks.k1.hdfs.filePrefix = events-
-ia1.sinks.k1.hdfs.rollcount = 0
-a1.sinks.k1.hdfs.rollcount = 50000
+ia1.sinks.k1.hdfs.rollBytes = 0
+a1.sinks.k1.hdfs.rollCount = 50000
 a1.sinks.k1.hdfs.rollSize = 0
 a1.sinks.k1.hdfs.filType = DataStream
 a1.sinks.k1.hdfs.writeFormat = Text
@@ -122,6 +124,7 @@ sqoop import \
 --table movies \
 --delete-target-dir \
 --target-dir '/user/ec2-user/sqoop' \
+--as-avrodatafile
 --compress  \
 --compression-codec 'snappy' 
 
@@ -146,7 +149,7 @@ INSERT OVERWRITE TABLE city_avro_ext
 SELECT * ;
 ```
 **JOIN query**
-
+// I used order by so we need to wait for his reply. I got CA as first one, other states includes TX,FL
 ```
 SELECT st.state, SUM(price) as p
 FROM sales sa JOIN stores  st 
@@ -159,6 +162,7 @@ LIMIT 5;
 ```
 
 **Spark**
+// include hdfs namendoe ports for both reading and writing
 
 ```
 val one = sc.textFile("/Users/sagardisawal/Documents/City.csv");
@@ -167,8 +171,6 @@ val three = two.map(x=>s"${x(0)}\t${x(1)}\t${x(2)+","+x(3)}")
 val four = three.saveAsTextFile("ansCity2.tsv")
 
 ```
-**Question will this work?**
-
 **Partitioning**
 ```
 In Hue settings tab, add these properties in settings 
@@ -179,5 +181,6 @@ set hive.exec.dynamic.partition=true
 create external table output(id int,name string,city string) partitioned by (yr int,mnth int) row format delimited fields terminated by ','  location '/user/admin/problem7/output/
 insert overwrite table output partition(yr,mnth) select id,name,city,year as yr,month as mnth from input;
 ```
+I got right this time, so I suggest to use parquet file format along with partioning across year and month.
 
 
