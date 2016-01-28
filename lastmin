@@ -1,0 +1,183 @@
+**Things to remember last day before exam**
+
+Hive dependencies
+
+```
+ <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-exec</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+
+  <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>2.7.1</version>
+    </dependency>
+
+```
+
+Java 
+
+```
+public class App extends UDF
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+    }
+
+    static Map<String,String> cityMap =  new HashMap<>();
+
+    static {
+        cityMap.put("ft","Fort Worth");
+        cityMap.put("sf","San Francisco");
+        cityMap.put("ny","New York");
+        cityMap.put("sj","San Jose");
+        cityMap.put("nj","New Jersey");
+
+    }
+
+c static String evaluate(String city){
+
+
+
+        String temp = city.toLowerCase().trim();
+
+        String[] tempArr =  {"ft","sf","ny","sj","nj"} ;
+
+        for(int i = 0; i<5;i++) {
+
+            if (temp.contains(tempArr[i])) {
+                {
+                    return temp.replace(tempArr[i],cityMap.get(tempArr[i]));
+                }
+            }
+        }
+
+
+        return city;
+    }
+}
+
+```
+To search for jar
+
+```
+mvn package
+find . -iname '*.jar' | grep SNAPSHOT
+
+```
+
+**Question what is the format of the table to be created??**
+
+
+**FLUME**
+```
+#define all three events
+a1.sources = src-1
+a1.sinks = k1
+a1.channels = c1
+
+#channels
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 50000
+a1.channels.c1.transactionCapacity = 50000
+
+
+
+#source properties
+a1.sources.src-1.type = spooldir
+a1.sources.src-1.channels = c1
+a1.sources.src-1.spoolDir = test
+a1.sources.src-1.fileHeader = true
+
+
+#sink properties
+a1.sinks.k1.type = hdfs
+a1.sinks.k1.hdfs.path = /user/ec2-user/flumetest
+a1.sinks.k1.hdfs.filePrefix = events-
+ia1.sinks.k1.hdfs.rollcount = 0
+a1.sinks.k1.hdfs.rollcount = 50000
+a1.sinks.k1.hdfs.rollSize = 0
+a1.sinks.k1.hdfs.filType = DataStream
+a1.sinks.k1.hdfs.writeFormat = Text
+
+#binding all source and sink to channel
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1
+
+```
+
+
+
+**SQOOP**
+
+```
+sqoop import \
+--driver com.mysql.jdbc.Driver \
+--connect jdbc:mysql://localhost/movie \
+--username root \
+--password 107 \
+--table movies \
+--delete-target-dir \
+--target-dir '/user/ec2-user/sqoop' \
+--compress  \
+--compression-codec 'snappy' 
+
+```
+
+**Question is the driver needed**
+
+
+**Format Conversion**
+```
+CREATE EXTERNAL TABLE city_avro_ext(
+id string,
+code string,
+name string,
+year string
+)
+STORED AS AVRO
+LOCATION 'http://ec2-52-23-251-76.compute-1.amazonaws.com:50070/user/root/cityavro';
+
+FROM city
+INSERT OVERWRITE TABLE city_avro_ext
+SELECT * ;
+```
+**JOIN query**
+
+```
+SELECT st.state, SUM(price) as p
+FROM sales sa JOIN stores  st 
+ON sa.id = st.id
+GROUP BY st.state
+DISTRIBUTE BY p
+SORT BY p DESC
+LIMIT 5;
+
+```
+
+**Spark**
+
+```
+val one = sc.textFile("/Users/sagardisawal/Documents/City.csv");
+val two = one.map(x => x.split(','))
+val three = two.map(x=>s"${x(0)}\t${x(1)}\t${x(2)+","+x(3)}") 
+val four = three.saveAsTextFile("ansCity2.tsv")
+
+```
+**Question will this work?**
+
+**Partitioning**
+```
+In Hue settings tab, add these properties in settings 
+set hive.exec.dynamic.partition=true
+    set hive.exec.dynamic.partition.mode=nonstrict
+```
+```
+create external table output(id int,name string,city string) partitioned by (yr int,mnth int) row format delimited fields terminated by ','  location '/user/admin/problem7/output/
+insert overwrite table output partition(yr,mnth) select id,name,city,year as yr,month as mnth from input;
+```
+
+
